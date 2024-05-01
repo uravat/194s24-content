@@ -1,0 +1,271 @@
+---
+title: "2 WA. Network Visualization "
+author: "Dr. Uma Ravat"
+subtitle: '<br><br>Introduction to Social Network Analysis in R '
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r, echo = F}
+bfcolor <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{\\textbf{%s}}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'><b>%s</b></span>", color, x)
+  } else x
+}
+```
+
+
+# 1. Setting up the network 
+
+Load the `UKFaculty` Network
+
+```{r setup_network}
+# (remove # below and run this if they are not already installed )
+# once installed put # back to avoid warnings/errors
+#install.packages("igraph")
+#install.packages("igraphdata")
+
+library(igraphdata)
+library(igraph)
+
+## Some setup so plots are bigger with no margins
+#default margins
+def_marg <- c(5.1, 4.1, 4.1, 2.1)
+
+#no margins
+no_marg <- c(0, 0, 0, 0)
+
+## load the data
+data(UKfaculty)
+```
+
+
+# 2. Network visualization
+
+- via algorithms
+
+---
+
+### Basic plot
+
+```{r}
+#basic plot
+plot(UKfaculty)
+```
+
+---
+
+### Plotting Parameters : Nodes 
+
+vertex.[parameter] (e.g., vertex.color =)
+
+```{r, echo=FALSE}
+dfn <- data.frame(node_parameter = c("color", 
+                               "shape",
+                               "size", 
+                               "label", 
+                               "label family",
+                               "label font",
+                               "label cex", 
+                               "label distance", 
+                               ""), 
+                  purpose_options =c("node color", "circle, square, rectangle, sphere, pie, raster, etc.", 
+                                    "default = 15", "vector with labels", "font family of the label: Helvetica, Times", "1= plain, 2= bold, 3= italic, 4 = bold italic", "font size", "distance between node and label", ""))
+dfn %>%
+   knitr::kable(format = "html")
+```
+
+
+
+---
+
+###  Plotting Parameters: Edges
+
+edge.[parameter] (e.g., edge.color =)
+
+```{r, echo=FALSE}
+dfe <- data.frame(edge_parameter = c("color", 
+                               "lty",
+                               "width", 
+                               "label",
+                               "label family",
+                               "label font",
+                               "label cex", 
+                               "curvature", 
+                               "arrow size"),
+                  purpose_options =c("edge color", "type of line: 0='blank', 1= 'solid', 2= 'dashed', 3= 'dotted', 4 = 'dotdash', 5= 'longdash', 6= 'twodash'","default = 1", "vector with labels", "font family of the label: Helvetica, Times", "1= plain, 2= bold, 3= italic, 4 = bold italic", "font size", "edge curvature - range [0,1]", "default = 1"))
+
+dfe %>%
+   knitr::kable(format = "html")
+
+```
+
+---
+
+### Aside about colors 
+
+R has 657 built in color names!
+
+To see a list of names:
+```{r}
+colors()
+```
+
+### Improving the plot
+
++ Reduce the crossing of edges 
++ Keep the edge length as constant as possible
+
+---
+
+
+
+#### **Option 1:** Setting visual properties outside the plot function
+
+We add attributes to the network
+
+**Step 1** Set vertex and/or edge attributes
+
+```{r}
+
+# vertex properties 
+V(UKfaculty)$color <- "#88398A"
+
+# vertex label properties
+V(UKfaculty)$label.color <- "white"
+V(UKfaculty)$label.cex <- 0.5
+
+# edge properties
+E(UKfaculty)$color <- "gray"
+
+```
+
+**Step 2** Plot network
+
+```{r}
+
+plot(UKfaculty)
+
+```
+
+---
+
+#### Option 2 Setting visual properties inside the plot function
+
+We use the function arguments
+
+```{r}
+
+plot(UKfaculty, 
+     # === vertex properties 
+     vertex.color = "#88398A",
+     vertex.frame.color = "#88398A",
+     vertex.size = 9,
+     # === vertex label properties
+     vertex.label.cex = 0.5,
+     vertex.label.color = "white",
+     vertex.label.family = "Helvetica",
+     # === edge properties
+     edge.color = "gray",
+     edge.width = 0.5,
+     edge.arrow.size = 0.2)
+```
+
+
+---
+
+#### Which option to use? 
+
+1. Option 1(outside the plot function) : Use for assigning different visual properties to subsets of edges or nodes. 
+2. Option 2(inside the plot function): Use for assigning global visual properties to all edges or nodes.
+
+Most often, combine the two
+
+
+### Coloring nodes by group to which they belong
+
+```{r}
+table(V(UKfaculty)$Group)
+
+mycolors <- c("black", 
+              "#D3D3D3", 
+              "#88398A", 
+              "white", 
+              "#562457")
+mylabcols <- c("white", "black", "white", "black", "white")
+
+V(UKfaculty)$color <- mycolors[V(UKfaculty)$Group]
+V(UKfaculty)$frame.color <- mycolors[V(UKfaculty)$Group]
+V(UKfaculty)$label.color <- mylabcols[V(UKfaculty)$Group]
+
+plot(UKfaculty)
+```
+
+We can also combine both options. This is usually what we do. 
+
+```{r}
+plot(UKfaculty,
+     vertex.size = 9,
+     # === vertex label properties
+     vertex.label.family = "Helvetica",
+     # === edge properties
+     edge.width = 0.5,
+     edge.arrow.size = 0.1)
+```
+
+
+### Coloring specifc edges
+
+```{r}
+E(UKfaculty)$color <- "gray"
+E(UKfaculty)$color[E(UKfaculty)[47%--%28]] <- "red"
+
+plot(UKfaculty, 
+     # === vertex properties 
+     vertex.size = 9,
+     # === vertex label properties
+     vertex.label.cex = 0.5,
+     vertex.label.family = "Helvetica",
+     # === edge properties
+     edge.width = 0.5,
+     edge.arrow.size = 0.1)
+
+```
+
+## Activity: 
+
+Create your own plot of the karate data. Try changing different parameters to color different subsets of vertices and edges in a different way and write a short explanation of why you did what you did. 
+
+
+```{r}
+# Plot one 
+# your code here
+```
+
+**Explaination: **
+
+```{r}
+# Plot two 
+# your code here
+```
+
+**Explaination: **
+
+```{r}
+# Plot three
+# your code here
+```
+
+**Explaination: **
+
+```{r}
+# Plot four 
+# your code here
+```
+
+
