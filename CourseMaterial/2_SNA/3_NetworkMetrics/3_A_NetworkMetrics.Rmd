@@ -1,0 +1,79 @@
+---
+title: "3 Activity: Descriptive Network Statistics (Metrics) "
+author: "Dr. Uma Ravat"
+subtitle: '<br><br>Introduction to Social Network Analysis in R '
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo = F}
+bfcolor <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{\\textbf{%s}}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'><b>%s</b></span>", color, x)
+  } else x
+}
+```
+
+
+# 1. Setting up the network 
+
+Load the `UKFaculty` Network
+
+```{r setup_network}
+# (remove # below and run this if they are not already installed )
+# once installed put # back to avoid warnings/errors
+#install.packages("igraph")
+#install.packages("igraphdata")
+
+library(igraphdata)
+library(igraph)
+
+## Some setup so plots are bigger with no margins
+#default margins
+def_marg <- c(5.1, 4.1, 4.1, 2.1)
+
+#no margins
+no_marg <- c(0, 0, 0, 0)
+
+## load the data
+data(UKfaculty)
+```
+
+
+
+### Activity 1:  Node or Network Metrics? 
+
+List  each metric we looked at below. Discuss with your peers, whether it is a node level(individual) network metric or a whole network metric? 
+
+
+### Activity 2: Descriptive statistics for the karate network
+
+Obtain each of the descriptive statistics for the `karate` network and interpret what these metrics say about the individuals as well as the whole network. 
+
+_Be sure to load the network first_
+
+_Add code chunks as necessary to run your code and answer the following_
+
+`r bfcolor("Question:", "blue")`
+
+```{r}
+# Metric 1
+#Your code here
+```
+
+Your Interpretation of Metric 1 here: 
+
+
+```{r}
+# Metric 2
+#Your code here
+```
+
+Your Interpretation of Metric 2 here: 
+
+
+## Activity 3: Use the help for each function above and use the metrics with other agruments to explore the `karate` network and calculate and interpret other aspects of the `karate` network. 

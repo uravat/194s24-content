@@ -1,0 +1,100 @@
+---
+title: "3 WA. Descriptive Network Statistics (Metrics) "
+author: "Dr. Uma Ravat"
+subtitle: '<br><br>Introduction to Social Network Analysis in R '
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo = F}
+bfcolor <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{\\textbf{%s}}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'><b>%s</b></span>", color, x)
+  } else x
+}
+```
+
+
+# 1. Setting up the network 
+
+Load the `UKFaculty` Network
+
+```{r setup_network}
+# (remove # below and run this if they are not already installed )
+# once installed put # back to avoid warnings/errors
+#install.packages("igraph")
+#install.packages("igraphdata")
+
+library(igraphdata)
+library(igraph)
+
+## Some setup so plots are bigger with no margins
+#default margins
+def_marg <- c(5.1, 4.1, 4.1, 2.1)
+
+#no margins
+no_marg <- c(0, 0, 0, 0)
+
+## load the data
+data(UKfaculty)
+```
+
+# 2. Descriptive Network Statistics (Metrics)
+
+```{r}
+
+# ================  ~~ Descriptive Network Statistics (Metrics) ================
+
+# Degree and other parameters, functions seen earlier
+degree(UKfaculty, mode = "in")
+
+# Density 
+graph.density(UKfaculty)
+
+# Reciprocity 
+reciprocity(UKfaculty)
+
+# Dyad Census 
+dyad_census(UKfaculty)
+
+# Transitivity 
+transitivity(UKfaculty)
+
+# Reachability 
+average.path.length(UKfaculty)
+
+diameter(UKfaculty, weights = NA)
+
+#diameter(UKfaculty)
+
+farthest_vertices(UKfaculty)
+
+#farthest_vertices(UKfaculty, , weights = NA)
+
+# Connected components
+is.connected(UKfaculty, mode = "strong")
+components(UKfaculty, mode="strong")$no
+
+plot(UKfaculty, 
+     # === vertex properties 
+     vertex.color = "#88398A",
+     vertex.frame.color = "#88398A",
+     vertex.size = 9,
+     # === vertex label properties
+     vertex.label.cex = 0.5,
+     vertex.label.color = "white",
+     vertex.label.family = "Helvetica",
+     # === edge properties
+     edge.color = "gray",
+     edge.width = 0.5,
+     edge.arrow.size = 0.2)
+
+
+# Articulation points
+articulation.points(UKfaculty)
+
+```
