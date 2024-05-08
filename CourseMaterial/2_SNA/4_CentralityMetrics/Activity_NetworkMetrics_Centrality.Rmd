@@ -1,0 +1,74 @@
+---
+title: "4 Activity: Descriptive Network Statistics (Metrics) : Centrality "
+author: "Dr. Uma Ravat"
+subtitle: '<br><br>Introduction to Social Network Analysis in R '
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo = F}
+bfcolor <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{\\textbf{%s}}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'><b>%s</b></span>", color, x)
+  } else x
+}
+```
+
+
+# 1. Setting up the network 
+
+Load the `UKFaculty` Network
+
+```{r setup_network}
+# (remove # below and run this if they are not already installed )
+# once installed put # back to avoid warnings/errors
+#install.packages("igraph")
+#install.packages("igraphdata")
+
+library(igraphdata)
+library(igraph)
+
+## Some setup so plots are bigger with no margins
+#default margins
+def_marg <- c(5.1, 4.1, 4.1, 2.1)
+
+#no margins
+no_marg <- c(0, 0, 0, 0)
+
+## load the data
+data(UKfaculty)
+```
+
+
+
+
+
+### Activity 1: Descriptive statistics for the karate network : Centrality metrics
+
+Explore centrality metrics for the `karate` network and interpret these metrics
+
+_Be sure to load the network first_
+
+_Add code chunks as necessary to run your code and answer the following_
+
+`r bfcolor("Question:", "blue")`
+
+```{r}
+# Metrics
+#Your code here
+```
+
+Your Interpretation of Metrics here: 
+
+
+
+## Activity 2: Explore other centrality measures
+
+[Other measures are in this link ](https://tidygraph.data-imaginist.com/reference/centrality.html)
+
+Each group should pick three measures, discuss them and apply them to `UKFaculty` and `karate` network. 
+
