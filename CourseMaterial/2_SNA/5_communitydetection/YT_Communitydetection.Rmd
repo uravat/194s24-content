@@ -1,0 +1,31 @@
+---
+title: "Your Turn: Community detection"
+author: "Dr. Uma Ravat"
+subtitle: '<br><br>Introduction to Social Network Analysis in R '
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo = F}
+bfcolor <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{\\textbf{%s}}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'><b>%s</b></span>", color, x)
+  } else x
+}
+```
+
+## Your turn!
+
+`r bfcolor("Question:", "blue")` 1. Conduct a community detection procedure for the `karate` data? What are the communities you find? What are the characteristics holding the communities together?
+
+
+
+## Solution
+
+`r bfcolor("Question:", "blue")` 2. Explore another community detection algorithm from [here](https://igraph.org/r/doc/cluster_fast_greedy.html)
+
+## Solution
