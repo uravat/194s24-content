@@ -1,0 +1,56 @@
+---
+title: 'YT: Working with data'
+author: "Dr. Uma Ravat"
+subtitle: '<br><br>Introduction to Social Network Analysis in R '
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo = F}
+bfcolor <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{\\textbf{%s}}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'><b>%s</b></span>", color, x)
+  } else x
+}
+```
+
+```{r, eval = TRUE}
+library(igraph)
+library(Matrix)
+
+```
+
+#  Load the `karate` Network from the csv file. 
+
+```{r}
+# read in the raw edgelist
+karate.data <- read.table("../data/karate.txt", sep = " ", header = TRUE, stringsAsFactors = FALSE)
+#convert data to matrix
+karate.edgelist <- matrix(unlist(karate.data), ncol = 2) + 1
+```
+
+
+# Convert Network Edge Data to 'igraph' Object and as an adjacency matrix
+
+```{r, echo = TRUE, eval = TRUE}
+
+```
+
+# Visulaize the Adjacency Matrix.
+
+What do you observe?
+
+
+
+## Save the igraph object as a .RDS file and load it again
+
+
+

@@ -1,0 +1,101 @@
+---
+title: "WA. Working with raw data"
+author: "Dr. Uma Ravat"
+subtitle: '<br><br>Introduction to Social Network Analysis in R '
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo = F}
+bfcolor <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{\\textbf{%s}}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'><b>%s</b></span>", color, x)
+  } else x
+}
+```
+
+
+# 1. Setting up the network 
+
+
+
+```{r setup_network}
+# (remove # below and run this if they are not already installed )
+# once installed put # back to avoid warnings/errors
+#install.packages("igraph")
+#install.packages("igraphdata")
+
+library(igraphdata)
+library(igraph)
+library(Matrix)
+
+## Some setup so plots are bigger with no margins
+#default margins
+def_marg <- c(5.1, 4.1, 4.1, 2.1)
+
+#no margins
+no_marg <- c(0, 0, 0, 0)
+
+## load the data and export to .csv
+data(UKfaculty)
+UKfaculty.df <- igraph::as_data_frame(UKfaculty)
+write.csv(UKfaculty.df,"../data/ukfaculty_df.csv", row.names = FALSE)
+```
+
+# Load the `UKfaculty` data drame from the csv file. 
+
+```{r}
+UKfaculty_df <- read.csv("../data/ukfaculty_df.csv")
+
+EL <- subset(UKfaculty_df, select = c(1, 2))
+
+UKfaculty.edgelist <- matrix(unlist(EL),ncol=2)
+```
+
+### Convert Network Edge Data to 'igraph' Objects
+```{r, echo = TRUE, eval = TRUE}
+#general igraph (defaults to directed)
+UKfaculty.igraph <- graph.edgelist((UKfaculty.edgelist))
+
+class(UKfaculty.igraph)
+UKfaculty.igraph
+UKfaculty
+
+#undirected igraph
+UKfaculty.undirected.graph <- graph.edgelist(UKfaculty.edgelist, directed = FALSE)
+class(UKfaculty.undirected.graph)
+UKfaculty.undirected.graph
+
+#adjacency matrix from igraph object
+UKfaculty.adjacency <- as_adj(UKfaculty.igraph)
+head(UKfaculty.adjacency)
+
+UKfaculty.adjacency2 <- as_adj(UKfaculty)
+head(UKfaculty.adjacency2)
+
+
+```
+
+### Adjacency Matrix Visualization
+```{r, echo = TRUE, eval = TRUE}
+image(Matrix(UKfaculty.adjacency))
+
+```
+
+## Save the igraph object 
+```{r}
+# Save an object to a file
+saveRDS(UKfaculty.igraph, file = "../data/my_UKfaculty_igraph.rds")
+# Restore the object
+my_UKfaculty <- readRDS(file = "../data/my_UKfaculty_igraph.rds")
+
+my_UKfaculty
+```
